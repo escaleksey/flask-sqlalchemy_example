@@ -1,0 +1,21 @@
+.container {
+    margin: 0 auto;
+}
+
+.page_header {
+    text-align: center;
+}
+
+.news_item {
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.button_block {
+    margin-top: 5px;
+}
+
+.info_block {
+    margin: 5px 0;
+    font-style: italic;
+}
