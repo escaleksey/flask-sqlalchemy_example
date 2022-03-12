@@ -1,10 +1,12 @@
 from flask import Flask, render_template, redirect, request, abort
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-
+from datetime import datetime
 from forms.news import NewsForm
 from forms.user import RegisterForm, LoginForm
+from forms.job import JobForm
 from data.news import News
 from data.users import User
+from data.jobs import Jobs
 from data import db_session
 
 app = Flask(__name__)
@@ -89,6 +91,7 @@ def edit_news(id):
 
 
 @app.route("/")
+@app.route("/index")
 def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
@@ -133,6 +136,31 @@ def login():
         return render_template('login.html', message="Неправильный логин или пароль", form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+
+@app.route('/jobs')
+@login_required
+def get_jobs():
+    db_sess = db_session.create_session()
+    jobs = db_sess.query(Jobs).all()
+    return render_template("job.html", title="Работы", jobs=jobs)
+
+@app.route('/add_job')
+@login_required
+def add_job():
+    form = JobForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        job = Jobs(team_leader=form.team_leader_id.data,
+                   job=form.job.data,
+                   work_size=form.work_size.data,
+                   collaborators=form.collaborators.data,
+                   is_finished=form.is_finished.data)
+        if form.is_finished.data:
+            job.end_date = datetime.datetime.now()
+        db_sess.add(job)
+        db_sess.commit()
+        redirect("/jobs")
+    return render_template("add_job.html", title="Добавление работы", form=form)
 
 if __name__ == '__main__':
     main()
