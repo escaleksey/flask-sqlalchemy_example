@@ -137,14 +137,15 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
-@app.route('/jobs')
+@app.route("/jobs")
 @login_required
 def get_jobs():
     db_sess = db_session.create_session()
     jobs = db_sess.query(Jobs).all()
     return render_template("job.html", title="Работы", jobs=jobs)
 
-@app.route('/add_job')
+
+@app.route("/add_job", methods=['GET', 'POST'])
 @login_required
 def add_job():
     form = JobForm()
@@ -156,10 +157,10 @@ def add_job():
                    collaborators=form.collaborators.data,
                    is_finished=form.is_finished.data)
         if form.is_finished.data:
-            job.end_date = datetime.datetime.now()
+            job.end_date = datetime.now()
         db_sess.add(job)
         db_sess.commit()
-        redirect("/jobs")
+        return redirect("/jobs")
     return render_template("add_job.html", title="Добавление работы", form=form)
 
 if __name__ == '__main__':
