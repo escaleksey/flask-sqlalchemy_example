@@ -13,11 +13,11 @@
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">Mars one</a>
+        <a class="navbar-brand" href="/">Mars one</a>
         {% if current_user.is_authenticated %}
             <div class="links_block">
-                <a class="link_item" href="/index">Home</a>
                 <a class="link_item" href="/jobs">Jobs</a>
+                <a class="link_item" href="/news">News</a>
             </div>
             <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
             

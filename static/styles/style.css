@@ -21,8 +21,7 @@
 }
 
 .links_block {
-    min-width: 100px;
-    justify-content: space-between;
+    padding: 0 5px;
     display: flex;
 }
 
@@ -31,6 +30,7 @@
     color: rgba(0,0,0,.9);
     text-decoration: none;
     font-size: 20px;
+    padding-right: 10px
 }
 
 .link_item:hover {

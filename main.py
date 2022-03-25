@@ -169,7 +169,8 @@ def edit_job(id):
     form = JobForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
-        job = db_sess.query(Jobs).filter(Jobs.id == id, Jobs.team_leader == current_user.id).first()
+        job = db_sess.query(Jobs).filter(Jobs.id == id,
+                                         (Jobs.team_leader == current_user.id | current_user.id == 1)).first()
         if job:
             form.job.data = job.job
             form.work_size.data = job.work_size
@@ -179,7 +180,8 @@ def edit_job(id):
             abort(404)
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        job = db_sess.query(Jobs).filter(Jobs.id == id, Jobs.team_leader == current_user.id).first()
+        job = db_sess.query(Jobs).filter(Jobs.id == id,
+                                         (Jobs.team_leader == current_user.id | current_user.id == 1)).first()
         if job:
             job.job = form.job.data
             job.work_size = form.work_size.data
